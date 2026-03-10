@@ -14,14 +14,8 @@ using namespace std;
  
 void OnMult(int dimensions, double *pha, double *phb, double *phc)
 {
-	
-	SYSTEMTIME Time1, Time2;
-	
-	char st[100];
 	double temp;
 	int i, j, k;
-
-    Time1 = clock();
 
 	for(i=0; i<dimensions; i++)
 	{	for( j=0; j<dimensions; j++)
@@ -33,18 +27,6 @@ void OnMult(int dimensions, double *pha, double *phb, double *phc)
 			phc[i*dimensions+j]=temp;
 		}
 	}
-
-
-    Time2 = clock();
-	sprintf(st, "Time: %3.3f seconds\n", (double)(Time2 - Time1) / CLOCKS_PER_SEC);
-	cout << st;
-
-	cout << "Result matrix: " << endl;
-	for(i=0; i<1; i++)
-	{	for(j=0; j<min(10,dimensions); j++)
-			cout << phc[j] << " ";
-	}
-	cout << endl;
 }
 
 
@@ -117,6 +99,8 @@ int main (int argc, char *argv[])
 		for(int j=0; j<dimensions; j++)
 			phc[i*dimensions + j] = 0.0;
 
+    double time1 = omp_get_wtime();
+
     switch (strategy){
         case 1: 
             OnMult(dimensions, pha, phb, phc);
@@ -131,6 +115,15 @@ int main (int argc, char *argv[])
             cerr << "Invalid strategy\n";
             exit(1);
     }
+
+    double time2 = omp_get_wtime();
+
+    // cout << "Result matrix: " << endl;
+	// for(int i=0; i<1; i++)
+	//     for(int j=0; j<min(10,dimensions); j++)
+    //         printf("phc[%d][%d] = %f\n", i, j, phc[i * dimensions + j]);
+
+	printf("Time taken: %3.5f seconds\n", time2-time1);
 
     free(pha);
     free(phb);
