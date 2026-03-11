@@ -6,7 +6,7 @@ import os
 from openpyxl import Workbook, load_workbook
 
 BINARY      = "./Assignment1"
-EXCEL_FILE  = "scripts/results.xlsx"
+EXCEL_FILE  = "benchmark/results.xlsx"
 PERF_EVENTS = "L1-dcache-load-misses,LLC-load-misses,cycles"
 
 SIZES = {

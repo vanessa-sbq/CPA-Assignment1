@@ -18,15 +18,15 @@ source cpa/bin/activate
 3. Install dependencies:
 
 ```bash
-pip install -r scripts/requirements.txt
+pip install -r benchmark/requirements.txt
 ```
 
 4. Run the benchmark script:
 ```bash
-python3 scripts/benchmark.py
+python3 benchmark/benchmark.py
 ```
 to run all benchmarks, or
 ```bash
-python3 scripts/benchmark.py --op <option_num>
+python3 benchmark/benchmark.py --op <option_num>
 ```
 to run only one type of multiplication
