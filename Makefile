@@ -13,7 +13,6 @@ CPP_FILES=$(wildcard *.cpp)
 TARGETS=$(C_FILES:%.c=bin/%) $(CPP_FILES:%.cpp=bin/%)
 
 # Assignment1 specific config
-OMPFLAGS = -fopenmp
 TARGET = Assignment1
 
 # Default source file (can be overridden: make SRC=multmatrix.cpp or make SRC=multmatrix_v2.cpp)
@@ -35,7 +34,7 @@ asm/%.asm: %.cpp
 
 # Rule to build Assignment1
 $(TARGET): $(SRC)
-	$(CXX) $(ASSIGNMENT_CXXFLAGS) $(OMPFLAGS) -o $(TARGET) $(SRC)
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $(SRC)
 
 # Convenience targets
 v1: SRC = multmatrix.cpp

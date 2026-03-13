@@ -15,7 +15,7 @@ SIZES = {
     3: [8192],
     4: [8192],
 }
-THREAD_COUNTS = [4, 8, 12, 16, 20, 24]
+THREAD_COUNTS = list(reversed([4, 8, 12, 16, 20, 24]))
 
 # Row indices (starting on 1, because of openpyxl)
 ROWS = {"time": 2, "gflops": 3, "l1_miss": 4, "l2_miss": 5, "cycles": 6, "joules": 7, "watts": 8}

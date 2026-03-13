@@ -1,8 +1,8 @@
+#include <cerrno>
+#include <cstring>
 #include <omp.h>
 #include <stdio.h>
 #include <iostream>
-#include <iomanip>
-#include <time.h>
 #include <cstdlib>
 #include <fstream>
 #include <string>
@@ -11,13 +11,23 @@ using namespace std;
 
 double *pha, *phb, *phc;
 
+const std::string powercap_path = "/sys/class/powercap/intel-rapl/intel-rapl:0/energy_uj";
 
 /**
  * Reads energy consumption in microjoules from the specified file path.
  * @return The energy consumption in microjoules.
  */
 long long read_energy_uj() {
-    std::ifstream f("/sys/class/powercap/intel-rapl/intel-rapl:0/energy_uj"); // directory path where the energy_uj file is located.
+    std::ifstream f(powercap_path); // directory path where the energy_uj file is located.
+	if (f.fail()) {
+		fprintf(stderr, "Failed to open %s: %s\n", powercap_path.c_str(), strerror(errno));
+		if (errno == ENOENT) {
+			fprintf(stderr, "Is powercap installed?\n");
+		} else if (errno == EACCES) {
+			fprintf(stderr, "Try running with sudo\n");
+		}
+		exit(1);
+	}
     long long val; f >> val;
     return val;
 }
@@ -33,7 +43,7 @@ void startOrResetMatrices(int m_ar, int m_br) {
 	phb = (double *)malloc((m_ar * m_ar) * sizeof(double));
 	phc = (double *)calloc((m_ar * m_ar), sizeof(double));
 
-	int i, j, k;
+	int i, j;
 
 	for(i=0; i<m_ar; i++)
 		for(j=0; j<m_ar; j++)
@@ -104,7 +114,6 @@ void display_measurements(double start, double end, int m_ar, int m_br, double e
  * @param m_br Number of rows/columns of matrix B
  */
 void OnMult(int m_ar, int m_br) {	
-	char st[100];
 	double temp;
 	int i, j, k;
 
@@ -238,8 +247,7 @@ void OnMultLineParallelSIMD(int m_ar, int m_br, int num_threads) {
 /**
  * Displays an interactive menu for selecting matrix multiplication method and input dimensions.
  */
-int main (int argc, char *argv[]) {
-	char c;
+int main () {
 	int lin, col, nt=1;
 	int op;
 
