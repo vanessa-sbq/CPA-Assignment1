@@ -1,5 +1,3 @@
-#include <cerrno>
-#include <cstring>
 #include <omp.h>
 #include <stdio.h>
 #include <iostream>
@@ -19,15 +17,18 @@ const std::string powercap_path = "/sys/class/powercap/intel-rapl/intel-rapl:0/e
  */
 long long read_energy_uj() {
     std::ifstream f(powercap_path); // directory path where the energy_uj file is located.
-	if (f.fail()) {
-		fprintf(stderr, "Failed to open %s: %s\n", powercap_path.c_str(), strerror(errno));
-		if (errno == ENOENT) {
-			fprintf(stderr, "Is powercap installed?\n");
-		} else if (errno == EACCES) {
-			fprintf(stderr, "Try running with sudo\n");
-		}
-		exit(1);
-	}
+	if (f.fail())
+		return 0;
+	// if (f.fail()) {
+	// 	fprintf(stderr, "Failed to open %s: %s\n", powercap_path.c_str(), strerror(errno));
+	// 	if (errno == ENOENT) {
+	// 		fprintf(stderr, "Is powercap installed?\n");
+	// 	} else if (errno == EACCES) {
+	// 		fprintf(stderr, "Try running with sudo to get energy information\n");
+	// 		return 0;
+	// 	}
+	// 	exit(1);
+	// }
     long long val; f >> val;
     return val;
 }
