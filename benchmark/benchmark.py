@@ -59,9 +59,9 @@ def run_benchmark(op, size, num_threads=None):
         "gflops":  float(gflops_match.group(1)) if gflops_match else None,
         "joules":  float(joules_match.group(1)) if joules_match else None,
         "watts":  float(watts_match.group(1))  if watts_match  else None,
-        "l1_miss": parse_perf("L1-dcache-load-misses"),
-        "l2_miss": parse_perf("LLC-load-misses"),
-        "cycles":  parse_perf("cycles"),
+        "l1_miss": parse_perf("cpu_core/L1-dcache-load-misses/"),
+        "l2_miss": parse_perf("cpu_core/LLC-load-misses/"),
+        "cycles":  parse_perf("cpu_core/cycles/"),
     }
 
 
