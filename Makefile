@@ -5,7 +5,7 @@ CXXFLAGS+=-Wall -Wextra -Werror
 CXXFLAGS+=-O3
 CXXFLAGS+=-fopenmp
 
-SRC=multmatrix_v2.cpp
+SRC=multmatrix.cpp
 TARGET=Assignment1
 
 $(TARGET): $(SRC) Makefile

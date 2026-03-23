@@ -19,7 +19,9 @@ long long read_energy_uj() {
     std::ifstream f(powercap_path); // directory path where the energy_uj file is located.
 	if (f.fail())
 		return 0;
-	// if (f.fail()) {
+
+	// This part is commented for the benchmark on FEUP's PCs
+	// if (f.fail()) { 
 	// 	fprintf(stderr, "Failed to open %s: %s\n", powercap_path.c_str(), strerror(errno));
 	// 	if (errno == ENOENT) {
 	// 		fprintf(stderr, "Is powercap installed?\n");
@@ -29,6 +31,7 @@ long long read_energy_uj() {
 	// 	}
 	// 	exit(1);
 	// }
+	
     long long val; f >> val;
     return val;
 }
