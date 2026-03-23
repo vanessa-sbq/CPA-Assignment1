@@ -20,8 +20,8 @@ THREAD_COUNTS = list(reversed([4, 8, 12, 16, 20, 24]))
 # Row indices (starting on 1, because of openpyxl)
 ROWS = {"time": 2, "gflops": 3, "l1_miss": 4, "l2_miss": 5, "cycles": 6, "joules": 7, "watts": 8}
 
-
 def make_input(op, size, num_threads=None):
+    """Prepare input for the benchmark binary."""
     parts = [op, f"{size} {size}"]
     if num_threads is not None:
         parts.append(num_threads)
@@ -66,6 +66,7 @@ def run_benchmark(op, size, num_threads=None):
 
 
 def get_or_create_sheet(wb, name, col_headers):
+    """Get existing sheet or create a new one with headers."""
     if name in wb.sheetnames:
         return wb[name]
     ws = wb.create_sheet(name)
@@ -81,14 +82,17 @@ def get_or_create_sheet(wb, name, col_headers):
 
 
 def get_col(keys, key):
+    """Get column index for a given key (1-based for openpyxl)."""
     return keys.index(key) + 2
 
 
 def read_cell(ws, keys, key, row):
+    """Read a cell value based on key and row."""
     return ws.cell(row=row, column=get_col(keys, key)).value
 
 
 def write_data(ws, keys, key, data):
+    """Write benchmark data to the appropriate cells."""
     col = get_col(keys, key)
     for metric, row in ROWS.items():
         if data.get(metric) is not None:
@@ -96,6 +100,7 @@ def write_data(ws, keys, key, data):
 
 
 def run_sequential(wb, op, sheet_name):
+    """Run benchmarks for sequential versions."""
     sizes = SIZES[op]
     ws = get_or_create_sheet(wb, sheet_name, [f"{s}x{s}" for s in sizes])
 
@@ -115,6 +120,7 @@ def run_sequential(wb, op, sheet_name):
 
 
 def run_parallel(wb, op, sheet_name):
+    """Run benchmarks for parallel versions."""
     size = SIZES[op][0]
     ws = get_or_create_sheet(wb, sheet_name, [f"{t} threads" for t in THREAD_COUNTS])
 
@@ -134,6 +140,7 @@ def run_parallel(wb, op, sheet_name):
 
 
 def main():
+    """Main entry point: parse args, run benchmarks, and save results."""
     parser = argparse.ArgumentParser(description="Run mmult benchmarks and save to Excel.")
     parser.add_argument("--op", type=int, choices=[1, 2, 3, 4], help="1=OnMult, 2=OnMultLine, 3=OnMultLineParallel, 4=OnMultLineParallelSIMD")
     args = parser.parse_args()
