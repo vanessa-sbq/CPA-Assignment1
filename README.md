@@ -5,7 +5,7 @@
 1. Build the project:
 
 ```bash
-make v2
+make
 ```
 
 2. Create and activate a Python virtual environment:
@@ -29,4 +29,4 @@ to run all benchmarks, or
 ```bash
 python3 benchmark/benchmark.py --op <option_num>
 ```
-to run only one type of multiplication
+to run only one type of multiplication.

@@ -280,7 +280,6 @@ int main () {
                 cin >> nt;
                 OnMultLineParallelSIMD(lin, col, nt);
                 break;
-			// TODO: Should there be more parallel versions? (Check assignment file)
 		}
 	} while (op != 0);
 }
